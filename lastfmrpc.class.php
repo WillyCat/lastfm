@@ -1,6 +1,20 @@
 <?php
 
 /**
+ * Classes to access last.fm
+ *
+ * $l = new lastfmBio('Cher');
+ * $l -> getSummary(): string
+ * $l -> getContent(): string
+ *
+ * $l = new lastfmSimilar('Cher');
+ * $l -> countArtists(): int
+ * $l -> getArtists(): array of objects
+ *
+ * $l = new lastfmTags('Cher');
+ * $l -> countTags(): int
+ * $l -> getTags(): array of objects
+
  * @see https://www.last.fm/fr/api
  */
 
@@ -14,7 +28,7 @@ abstract class lastfmrpc
 	// query infos - technical
 	private $user   = 'RJ';
 	private $format = 'json';
-	private $apikey = 'ce125605380c4c64537af38893a2a873';
+	private $apikey = '';
 	private $ws     = 'http://ws.audioscrobbler.com/2.0';
 
 	/*
@@ -55,6 +69,7 @@ abstract class lastfmrpc
 		{
 		case 'artist': $this -> setArtist($value); break;
 		case 'method': $this -> setMethod($value); break;
+		case 'apikey': $this -> apikey = $value; break;
 		default: throw new Exception ('Unknown parm ' . $name);
 		}
 	}
@@ -91,7 +106,7 @@ abstract class lastfmrpc
 	}
 
 	protected function
-	fetchData(): stdClass
+	fetchData()
 	{
 		$this -> buildUrl();
 		$this -> fetch();
@@ -100,7 +115,9 @@ abstract class lastfmrpc
 		case 'json' :
 			$this -> resultAsObject = json_decode ($this -> getRawResponse());
 			if (property_exists ($this->resultAsObject, 'error'))
+			{
 				throw new Exception ($this->resultAsObject -> message);
+			}
 			break;
 		default:
 			throw new Exception ('Format not implemented: '.$this -> format);
@@ -157,7 +174,8 @@ abstract class lastfmrpc
 		$r = new tinyHttp($this -> url);
 		$this -> response = $r->send();
 		if ($this -> response -> getStatus() != 200)
-			throw new Exception ('HTTP code ' . $status);
+			throw new Exception ('HTTP code ' . $this -> response -> getStatus());
+			//throw new Exception ('HTTP error');
 	}
 }
 ?>

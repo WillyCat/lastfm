@@ -6,9 +6,9 @@ class lastfmArtistTopTracks extends lastfmrpc
 	private $tracks;
 
 	public function
-	__construct($artist)
+	__construct(string $apikey, string $artist)
 	{
-		parent::__construct(['artist' => $artist, 'method' => 'artist.getTopTracks'] );
+		parent::__construct(['apikey' => $apikey, 'artist' => $artist, 'method' => 'artist.getTopTracks'] );
 
 		$res = $this -> fetchData();
 
@@ -21,7 +21,10 @@ class lastfmArtistTopTracks extends lastfmrpc
 				$track['rank'] = $trackObject -> {'@attr'} -> rank;
 				$track['name'] = $trackObject -> name;
 				$track['playcount'] = $trackObject -> playcount;
-				$track['mbid'] = $trackObject -> mbid;
+				if (property_exists ($trackObject, 'mbid'))
+					$track['mbid'] = $trackObject -> mbid;
+				else
+					$track['mbid'] = '';
 				$track['url'] = $trackObject -> url;
 				$artist = [ ];
 				$artist['name'] = $trackObject -> artist -> name;

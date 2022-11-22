@@ -3,9 +3,9 @@
 class lastfmBio extends lastfmrpc
 {
 	public function
-	__construct($artist)
+	__construct(string $apikey, string $artist)
 	{
-		parent::__construct([ 'artist' => $artist, 'method' => 'artist.getinfo']);
+		parent::__construct([ 'apikey' => $apikey, 'artist' => $artist, 'method' => 'artist.getinfo']);
 		$this -> fetchData();
 	}
 

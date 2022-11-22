@@ -6,9 +6,9 @@ class lastfmTags extends lastfmrpc
 	private $tags;
 
 	public function
-	__construct($artist)
+	__construct(string $apikey, string $artist)
 	{
-		parent::__construct(['artist' => $artist, 'method' => 'artist.getTopTags'] );
+		parent::__construct(['apikey' => $apikey, 'artist' => $artist, 'method' => 'artist.getTopTags'] );
 
 		$res = $this -> fetchData();
 

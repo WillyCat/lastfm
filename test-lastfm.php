@@ -6,7 +6,7 @@ myautoloader ($class_name)
 {
 	$fn =  $class_name . '.class.php';
 
-	$paths = [ '.' , '../prod' , '/home/fhou732/classes' ];
+	$paths = [ '.' , '../prod' , '/home/fhou732/classes', '/Users/fh/classes/prod/' ];
 
 	foreach ($paths as $path)
 	{
@@ -21,7 +21,7 @@ myautoloader ($class_name)
 }
 
 /*
-$t = new lastfmTags ('Red Hot Chili Peppers');
+$t = new lastfmTags ($apikey, 'Red Hot Chili Peppers');
 $len = $t -> countTags();
 echo 'Tags: ' . $len . "\n";
 if ($len > 0)
@@ -40,10 +40,12 @@ $id = 'MC Solaar';
 
 $displayRaw = false;
 
+$apikey = trim (file_get_contents ('lastfm.key'));
+
 echo "===================================================================\n";
 echo "lastfmSimilar\n";
 echo "===================================================================\n";
-$t = new lastfmSimilar ($id);
+$t = new lastfmSimilar ($apikey, $id);
 echo 'URL: ' . $t->getUrl() . "\n";
 if ($displayRaw)
 {
@@ -71,7 +73,7 @@ if ($len > 0)
 echo "===================================================================\n";
 echo "lastfmTags\n";
 echo "===================================================================\n";
-$t = new lastfmTags ($id);
+$t = new lastfmTags ($apikey, $id);
 echo 'URL: ' . $t->getUrl() . "\n";
 if ($displayRaw)
 {
@@ -88,7 +90,7 @@ echo "lastfmBio\n";
 echo "===================================================================\n";
 // at the end of the bio
 // <a href="https://www.last.fm/music/Nirvana">Read more on Last.fm</a>
-$t = new lastfmBio ($id);
+$t = new lastfmBio ($apikey, $id);
 echo 'URL: ' . $t->getUrl() . "\n";
 $r = $t -> getResultAsObject();
 print_r ($r);
@@ -97,7 +99,7 @@ echo 'Medium image: ' . $img . "\n";
 $img = $t -> getImage('large');
 echo 'Large image: ' . $img . "\n";
 
-$t = new lastfmArtistSearch ('Cher');
+$t = new lastfmArtistSearch ($apikey, 'Cher');
 $r = $t -> getResults();
 // print_r ($r);
 $artists = $r -> results -> artistmatches -> artist;
@@ -107,7 +109,7 @@ foreach ($artists as $artist)
 echo "===================================================================\n";
 echo "lastfmArtistTopTracks\n";
 echo "===================================================================\n";
-$t = new lastfmArtistTopTracks($id);
+$t = new lastfmArtistTopTracks($apikey, $id);
 // echo $t -> getRawResponse();
 $nb = $t -> countTracks();
 echo 'TRACKS: ' . $nb . "\n";

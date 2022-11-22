@@ -6,9 +6,9 @@ class lastfmSimilar extends lastfmrpc
 	private $artists;
 
 	public function
-	__construct($artist)
+	__construct(string $apikey, string $artist)
 	{
-		parent::__construct(['artist' => $artist, 'method' => 'artist.getsimilar' ]);
+		parent::__construct([ 'apikey' => $apikey, 'artist' => $artist, 'method' => 'artist.getsimilar' ]);
 		$res = $this -> fetchData();
 
 		$artists = [ ];
@@ -18,7 +18,10 @@ class lastfmSimilar extends lastfmrpc
 			{
 				$artist = [];
 				$artist['name'] = $a -> name;
-				$artist['mbid'] = $a -> mbid;
+				if (property_exists ($a, 'mbid'))
+					$artist['mbid'] = $a -> mbid;
+				else
+					$artist['mbid'] = '';
 				$artist['match'] = round($a -> match * 100) . '%';
 				$artists[] = $artist;
 			}
